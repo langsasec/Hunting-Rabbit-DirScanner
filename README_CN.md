@@ -1,4 +1,4 @@
-# Hunting-Rabbit-DirScanner
+# Hunting-Rabbit-DirScanner(猎兔目录扫描器)
 
 一款快速易上手的目录扫描工具。
 
