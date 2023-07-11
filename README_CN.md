@@ -5,7 +5,7 @@
 ## 使用方法
 
 ```sh
-shCopy CodeHunting-Rabbit-DirScanner 作者：浪飒
+Hunting-Rabbit-DirScanner 作者：浪飒
 
 参数选项：
   -h, --help            显示帮助信息并退出
@@ -25,19 +25,19 @@ shCopy CodeHunting-Rabbit-DirScanner 作者：浪飒
 默认扫描（使用所有字典，200个线程，仅返回状态码为200的结果）：
 
 ```sh
-Copy Codepython Hunting-Rabbit-DirScanner.py -u https://www.baidu.com
+python Hunting-Rabbit-DirScanner.py -u https://www.baidu.com
 ```
 
 保存403和302状态码的结果：
 
 ```sh
-Copy Codepython Hunting-Rabbit-DirScanner.py -u https://www.baidu.com -c 403,302
+python Hunting-Rabbit-DirScanner.py -u https://www.baidu.com -c 403,302
 ```
 
 指定字典进行扫描：
 
 ```sh
-Copy Codepython Hunting-Rabbit-DirScanner.py -u https://www.baidu.com -d jsp,api
+python Hunting-Rabbit-DirScanner.py -u https://www.baidu.com -d jsp,api
 ```
 
 ## 帮助
@@ -53,7 +53,7 @@ Copy Codepython Hunting-Rabbit-DirScanner.py -u https://www.baidu.com -d jsp,api
 5. 可用字典列表：
 
    ```sh
-   Copy Codeapache.txt
+   apache.txt
    api.txt
    asp.txt
    aspx.txt
