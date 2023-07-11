@@ -2,7 +2,7 @@
 
 A fast and easy-to-use directory scanning tool.
 
-[中文文档]([https://github.com/langsasec/Hunting-Rabbit-DirScanner/README_CN.md](https://github.com/langsasec/Hunting-Rabbit-DirScanner/blob/main/README_CN.md))
+[中文文档](https://github.com/langsasec/Hunting-Rabbit-DirScanner/blob/main/README_CN.md)
 
 ## Usage
 
