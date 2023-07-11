@@ -46,11 +46,13 @@ python Hunting-Rabbit-DirScanner.py -u https://www.baidu.com -d jsp,api
 
 2. 可自定义请求头，可选择从burpsuite或浏览器中粘贴请求头。
 
-3. 可以自定义字典并将其放入`dict`目录中。
+3. 线程太多或超时时间太短会导致输出结果减少。
 
-4. 扫描完毕后会将所记录url记录到`log`目录中。
+4. 可以自定义字典并将其放入`dict`目录中。
 
-5. 可用字典列表：
+5. 扫描完毕后会将所记录url记录到`log`目录中。
+
+6. 可用字典列表：
 
    ```sh
    apache.txt

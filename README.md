@@ -49,11 +49,13 @@ python Hunting-Rabbit-DirScanner.py -u https://www.baidu.com -d jsp,api
 
 2. Scan with custom headers (paste the headers from Burp Suite or browser).
 
-3. You can customize your own dictionaries and put them in the `dict` directory.
+3. Having too many threads or a short timeout duration may result in reduced output.
 
-4. After the scan is completed, the recorded URLs will be saved in the `log` directory.
+4. You can customize your own dictionaries and put them in the `dict` directory.
 
-5. List of available dictionaries:
+5. After the scan is completed, the recorded URLs will be saved in the `log` directory.
+
+6. List of available dictionaries:
 
    ```
    apache.txt

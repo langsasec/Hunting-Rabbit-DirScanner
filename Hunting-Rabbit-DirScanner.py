@@ -28,15 +28,15 @@ def read_dir(url, dict_name):
             with open(file_path, 'r', encoding='utf-8') as f:
                 lines = f.readlines()
                 if url is not None:
-                    words.extend([url + x.strip() for x in lines])
+                    words.extend([url + "/" + x.strip() for x in lines])
     else:
         dict_name = dict_name.split(',')
         for name in dict_name:
             with open(f"dict/{name}.txt", 'r', encoding="utf-8") as f:
                 lines = f.readlines()
                 if url is not None:
-                    words.extend([url + x.strip() for x in lines])
-    return words
+                    words.extend([url + "/" + x.strip() for x in lines])
+    return set(words)
 
 
 # 随机UA
@@ -129,6 +129,9 @@ def execute_threads(thread_num, worker):
 
 
 def dir_scan(url, use_random_ua, timeout, status_code_filter="200"):
+    url = url.replace("///", "/")
+    url = url.replace("//", "/")
+    url = url.replace(":/", "://")
     headers = {}
     with open('header.config', 'r') as file:
         for line in file:
@@ -326,7 +329,7 @@ def main():
 
     execute_threads(thread_num, worker)
 
-    if result==[]:
+    if result == []:
         print("[-] No result!")
     else:
         scan_log(url, result)
