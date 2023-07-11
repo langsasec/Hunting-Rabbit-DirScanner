@@ -152,18 +152,19 @@ def dir_scan(url, use_random_ua, timeout, status_code_filter="200"):
         # 发包
         req = requests.get(url, headers=headers, timeout=timeout, verify=False, allow_redirects=False)
         status_code = req.status_code
+        res_len = len(req.text)
         # 如果状态码符合条件，则打印结果
         status_code_list = status_code_filter.split(",")
         status_code_list.append("200")
         if str(status_code) in status_code_list:
-            print(green + f"[+] {url} - Status code: {status_code}")
-            return url
+            print(green + f"[+] {url} - Status code: {status_code}" + f" - Length: {res_len}")
+            return [url, status_code, res_len]
     except:
         print(red + f"[-] {url} - Request encountered an exception")
         pass
 
 
-def scan_log(name, links):
+def scan_log(name, result):
     name = name.replace("://", "-")
     name = name.replace("/", "-")
     log_file = f"log/{name}.html"
@@ -266,12 +267,16 @@ tr:not(:first-child) td {
   <table>
     <tr>
       <th>序号</th>
-      <th>URL地址</th>
+      <th>URL</th>
+      <th>状态码</th>
+      <th>响应长度</th>
     </tr>
-    {% for link in links %}
+    {% for status_code,link,length in result %}
     <tr>
       <td>{{ loop.index }}</td>
       <td><a href="{{ link }}" target="_blank">{{ link }}</a></td>
+      <td>{{ status_code }}</td>
+      <td>{{ length }}</td>
     </tr>
     {% endfor %}
   </table>
@@ -285,7 +290,7 @@ tr:not(:first-child) td {
 """
 
     template = Template(template_str)
-    output = template.render(links=links)
+    output = template.render(result=result)
 
     with open(log_file, 'w', encoding='utf-8') as f:
         f.write(output)
@@ -318,11 +323,11 @@ def main():
         global is_paused
         while words:
             word = words.pop()
-            url = dir_scan(word, use_random_ua, timeout, status_code_filter)
-            if url is None:
+            info = dir_scan(word, use_random_ua, timeout, status_code_filter)
+            if info is None:
                 pass
             else:
-                result.append(url)
+                result.append(info)
             while is_paused:
                 while is_paused:
                     sys.exit(0)
@@ -335,7 +340,9 @@ def main():
         scan_log(url, result)
     reset = "\033[0m"
     print(
-        reset + "[Hunting-Rabbit-DirScanner]: Directory scan completed. Scan results have been saved to the 'log' folder.")
+        reset + f"[Hunting-Rabbit-DirScanner]: A total of {len(words)} directories were loaded" +"\n"+
+        f"[Hunting-Rabbit-DirScanner]: A total of {len(result)} directories were scanned"+"\n"
+        "[Hunting-Rabbit-DirScanner]: Directory scan completed. Scan results have been saved to the 'log' folder.")
 
 
 if __name__ == '__main__':
