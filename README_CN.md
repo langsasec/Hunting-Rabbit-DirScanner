@@ -11,7 +11,7 @@ Hunting-Rabbit-DirScanner 作者：浪飒
   -h, --help            显示帮助信息并退出
   -u URL, --url URL     目标URL
   -w THREADS, --threads THREADS
-                        线程数，默认为200
+                        线程数，默认为150
   -d DICT, --dict DICT  指定要使用的字典，可以使用逗号分隔多个字典， 默认为全部
   -t TIMEOUT, --timeout TIMEOUT
                         请求超时时间（秒），默认为1.5
@@ -22,7 +22,7 @@ Hunting-Rabbit-DirScanner 作者：浪飒
 
 ## 示例
 
-默认扫描（使用所有字典，200个线程，仅返回状态码为200的结果）：
+默认扫描（使用所有字典，150个线程，仅返回状态码为200的结果）：
 
 ```sh
 python Hunting-Rabbit-DirScanner.py -u https://www.baidu.com

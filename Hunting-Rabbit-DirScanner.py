@@ -8,8 +8,8 @@
 import argparse
 import random
 import threading
-import signal
-import sys
+import time
+
 import requests
 import glob
 
@@ -122,10 +122,15 @@ def execute_threads(thread_num, worker):
     threads = []
     for i in range(thread_num):
         t = threading.Thread(target=worker, args=(i,))
+        t.daemon = True  # 设置线程为守护线程,当主线程退出时，所有守护线程会立即停止
         threads.append(t)
         t.start()
-    for t in threads:
-        t.join()
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print('Ctrl+C pressed. Terminating all child threads, Please wait...')
+        pass
 
 
 def dir_scan(url, use_random_ua, timeout, status_code_filter="200"):
@@ -199,44 +204,25 @@ th, td {
   border-bottom: 1px solid #ddd;
   text-align: center;
   word-wrap: break-word;
+  position: relative; /* 添加相对定位 */
+}
+
+th:nth-child(1),
+td:nth-child(1),
+th:nth-child(3),
+td:nth-child(3),
+th:nth-child(4),
+td:nth-child(4) {
+  width: 10%;
 }
 
 th:nth-child(2),
 td:nth-child(2) {
-  position: relative;
-}
-
-th:nth-child(2)::after,
-td:nth-child(2)::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 100%;
-  transform: translateY(-50%);
-  height: 80%;
-  width: 1px;
-  background-color: #ddd;
-}
-
-th:first-child,
-td:first-child {
-  width: 20%;
-}
-
-th:last-child,
-td:last-child {
-  width: 80%;
-}
-
-tr:hover {
-  background-color: #f5f5f5;
-}
-
-tr:nth-child(even) {
-  background-color: #f9f9f9;
+  width: 40%;
 }
 
 /* 增加垂直分割线 */
+th:not(:first-child)::before,
 td:not(:first-child)::before {
   content: '';
   display: block;
@@ -246,6 +232,14 @@ td:not(:first-child)::before {
   position: absolute;
   left: 0;
   top: 0;
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
 }
 
 /* 增加水平分割线 */
@@ -259,33 +253,104 @@ tr:not(:first-child) td {
   font-size: 12px;
   color: #888;
 }
+
+.sort-button {
+  margin-top: 20px;
+  text-align: right; /* 将按钮靠右对齐 */
+}
+
+.sort-button button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.sort-button button:hover {
+  background-color: #45a049;
+}
 </style>
 </head>
 <body>
-<h1>目录扫描结果</h1>
-<div class="list-container">
-  <table>
-    <tr>
-      <th>序号</th>
-      <th>URL</th>
-      <th>状态码</th>
-      <th>响应长度</th>
-    </tr>
-    {% for status_code,link,length in result %}
-    <tr>
-      <td>{{ loop.index }}</td>
-      <td><a href="{{ link }}" target="_blank">{{ link }}</a></td>
-      <td>{{ status_code }}</td>
-      <td>{{ length }}</td>
-    </tr>
-    {% endfor %}
-  </table>
-</div>
-<div class="footer">
-  &copy; 2023 Hunting-Rabbit-DirScanner. All rights reserved. <a href="https://github.com/langsasec/Hunting-Rabbit-DirScanner">Github</a>
-</div>
+  <h1>目录扫描结果</h1>
+  <div class="list-container">
+    <div class="sort-button">
+      <button onclick="sortTable()">按响应长度排序</button>
+    </div>
+    <table id="result-table">
+      <tr>
+        <th>序号</th>
+        <th>URL</th>
+        <th>状态码</th>
+        <th>响应长度</th>
+      </tr>
+      {% for link,status_code, length in result %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td><a href="{{ link }}" target="_blank">{{ link }}</a></td>
+        <td>{{ status_code }}</td>
+        <td>{{ length }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+  <div class="footer">
+    &copy; 2023 Hunting-Rabbit-DirScanner. All rights reserved. <a href="https://github.com/langsasec/Hunting-Rabbit-DirScanner">Github</a>
+  </div>
+
+  <script>
+    var ascending = true; // 默认为升序排列
+
+    // 根据响应长度排序
+    function sortTable() {
+      var table, rows, switching, i, x, y, shouldSwitch;
+      table = document.getElementById("result-table");
+      switching = true;
+      while (switching) {
+        switching = false;
+        rows = table.rows;
+        for (i = 1; i < (rows.length - 1); i++) {
+          shouldSwitch = false;
+          x = parseInt(rows[i].getElementsByTagName("TD")[3].innerText);
+          y = parseInt(rows[i + 1].getElementsByTagName("TD")[3].innerText);
+          if (ascending) {
+            if (x > y) {
+              shouldSwitch = true;
+              break;
+            }
+          } else {
+            if (x < y) {
+              shouldSwitch = true;
+              break;
+            }
+          }
+        }
+        if (shouldSwitch) {
+          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+          switching = true;
+        }
+      }
+      // 切换排序顺序
+      ascending = !ascending;
+      // 更新按钮文本
+      var button = document.querySelector('.sort-button button');
+      button.textContent = ascending ? '按响应长度从小到大排序' : '按响应长度从大到小排序';
+    }
+
+    // 页面加载完成后调用排序函数
+    window.onload = function() {
+      sortTable();
+    };
+  </script>
 </body>
 </html>
+
+
 
 """
 
@@ -297,10 +362,10 @@ tr:not(:first-child) td {
 
 
 # main
-def main():
+if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Hunting-Rabbit-DirScanner  author: 浪飒")
     parser.add_argument("-u", "--url", type=str, required=True, help="Target URL")
-    parser.add_argument("-w", "--threads", type=int, default=200, help="Number of threads, default is 200")
+    parser.add_argument("-w", "--threads", type=int, default=150, help="Number of threads, default is 150")
     parser.add_argument("-d", "--dict", type=str, default="all",
                         help="Specify the dictionaries to use, multiple dictionaries can be separated by commas, default is all")
     parser.add_argument("-t", "--timeout", type=float, default=1.5, help="Request timeout in seconds, default is 1.5")
@@ -317,10 +382,11 @@ def main():
     use_random_ua = args.random_ua
 
     words = read_dir(url, dict_name)
+    dir_num = len(words)
     result = []
 
+
     def worker(i):
-        global is_paused
         while words:
             word = words.pop()
             info = dir_scan(word, use_random_ua, timeout, status_code_filter)
@@ -328,38 +394,15 @@ def main():
                 pass
             else:
                 result.append(info)
-            while is_paused:
-                while is_paused:
-                    sys.exit(0)
+
 
     execute_threads(thread_num, worker)
-
     if result == []:
         print("[-] No result!")
     else:
         scan_log(url, result)
     reset = "\033[0m"
     print(
-        reset + f"[Hunting-Rabbit-DirScanner]: A total of {len(words)} directories were loaded" +"\n"+
-        f"[Hunting-Rabbit-DirScanner]: A total of {len(result)} directories were scanned"+"\n"
+        reset + f"[Hunting-Rabbit-DirScanner]: A total of {dir_num} directories were loaded" + "\n" +
+        f"[Hunting-Rabbit-DirScanner]: A total of {len(result)} directories were logged" + "\n" +
         "[Hunting-Rabbit-DirScanner]: Directory scan completed. Scan results have been saved to the 'log' folder.")
-
-
-if __name__ == '__main__':
-    is_paused = False
-
-
-    # 定义一个信号处理函数
-    def signal_handler(sig, frame):
-        global is_paused
-        if is_paused:
-            print("继续执行线程")
-            is_paused = False
-        else:
-            print("暂停线程")
-            is_paused = True
-
-
-    # 注册信号处理函数
-    signal.signal(signal.SIGINT, signal_handler)
-    main()

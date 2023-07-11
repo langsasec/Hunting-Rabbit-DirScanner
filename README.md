@@ -13,7 +13,7 @@ options:
   -h, --help            show this help message and exit
   -u URL, --url URL     Target URL
   -w THREADS, --threads THREADS
-                        Number of threads, default is 200
+                        Number of threads, default is 150
   -d DICT, --dict DICT  Specify the dictionaries to use, multiple dictionaries can be separated by commas, default is
                         all
   -t TIMEOUT, --timeout TIMEOUT
@@ -25,7 +25,7 @@ options:
 
 ## Examples
 
-Default scan (using all dictionaries, 200 threads, return only 200 status code):
+Default scan (using all dictionaries, 150 threads, return only 200 status code):
 
 ```
 python Hunting-Rabbit-DirScanner.py -u https://www.baidu.com

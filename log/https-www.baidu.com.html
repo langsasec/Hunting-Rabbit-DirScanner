@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>目录扫描结果</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.list-container {
+  margin-top: 30px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+th, td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  word-wrap: break-word;
+  position: relative; /* 添加相对定位 */
+}
+
+th:nth-child(1),
+td:nth-child(1),
+th:nth-child(3),
+td:nth-child(3),
+th:nth-child(4),
+td:nth-child(4) {
+  width: 10%;
+}
+
+th:nth-child(2),
+td:nth-child(2) {
+  width: 40%;
+}
+
+/* 增加垂直分割线 */
+th:not(:first-child)::before,
+td:not(:first-child)::before {
+  content: '';
+  display: block;
+  height: 100%;
+  width: 1px;
+  background-color: #ddd;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* 增加水平分割线 */
+tr:not(:first-child) td {
+  border-top: 1px solid #ddd;
+}
+
+.footer {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 12px;
+  color: #888;
+}
+
+.sort-button {
+  margin-top: 20px;
+  text-align: right; /* 将按钮靠右对齐 */
+}
+
+.sort-button button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.sort-button button:hover {
+  background-color: #45a049;
+}
+</style>
+</head>
+<body>
+  <h1>目录扫描结果</h1>
+  <div class="list-container">
+    <div class="sort-button">
+      <button onclick="sortTable()">按响应长度排序</button>
+    </div>
+    <table id="result-table">
+      <tr>
+        <th>序号</th>
+        <th>URL</th>
+        <th>状态码</th>
+        <th>响应长度</th>
+      </tr>
+      
+      <tr>
+        <td>1</td>
+        <td><a href="https://www.baidu.com/Index.php" target="_blank">https://www.baidu.com/Index.php</a></td>
+        <td>200</td>
+        <td>385596</td>
+      </tr>
+      
+    </table>
+  </div>
+  <div class="footer">
+    &copy; 2023 Hunting-Rabbit-DirScanner. All rights reserved. <a href="https://github.com/langsasec/Hunting-Rabbit-DirScanner">Github</a>
+  </div>
+
+  <script>
+    var ascending = true; // 默认为升序排列
+
+    // 根据响应长度排序
+    function sortTable() {
+      var table, rows, switching, i, x, y, shouldSwitch;
+      table = document.getElementById("result-table");
+      switching = true;
+      while (switching) {
+        switching = false;
+        rows = table.rows;
+        for (i = 1; i < (rows.length - 1); i++) {
+          shouldSwitch = false;
+          x = parseInt(rows[i].getElementsByTagName("TD")[3].innerText);
+          y = parseInt(rows[i + 1].getElementsByTagName("TD")[3].innerText);
+          if (ascending) {
+            if (x > y) {
+              shouldSwitch = true;
+              break;
+            }
+          } else {
+            if (x < y) {
+              shouldSwitch = true;
+              break;
+            }
+          }
+        }
+        if (shouldSwitch) {
+          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+          switching = true;
+        }
+      }
+      // 切换排序顺序
+      ascending = !ascending;
+      // 更新按钮文本
+      var button = document.querySelector('.sort-button button');
+      button.textContent = ascending ? '按响应长度从小到大排序' : '按响应长度从大到小排序';
+    }
+
+    // 页面加载完成后调用排序函数
+    window.onload = function() {
+      sortTable();
+    };
+  </script>
+</body>
+</html>
+
+
