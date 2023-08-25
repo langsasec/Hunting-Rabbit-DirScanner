@@ -2,8 +2,6 @@
 
 A fast and easy-to-use directory scanning tool.
 
-[英文文档](https://github.com/langsasec/Hunting-Rabbit-DirScanner/blob/main/README_EN.md)
-
 ## Usage
 
 ```
