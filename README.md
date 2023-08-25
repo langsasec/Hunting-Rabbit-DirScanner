@@ -58,66 +58,69 @@ python Hunting-Rabbit-DirScanner.py -u https://www.baidu.com -d jsp,api
 
    ```sh
    apache.txt
-   api.txt
-   asp.txt
-   aspx.txt
-   axis.txt
-   cgis.txt
-   coldfusion.txt
-   ctf.txt
-   domino.txt
-   editor.txt
-   espcms.txt
-   fatwire.txt
-   fatwire_pagenames.txt
-   FCKeditor编辑器.txt
-   frontpage.txt
-   hpsmh.txt
-   hyperion.txt
-   iis.txt
-   iplanet.txt
-   jboss.txt
-   jersey.txt
-   JoekoeCMS.txt
-   jrun.txt
-   jsp.txt
-   netware.txt
-   oracle.txt
-   php.txt
-   phpcms.txt
-   phpweb.txt
-   ror.txt
-   S2命令执行.txt
-   sap.txt
-   sharepoint.txt
-   shopex.txt
-   spring.txt
-   sunas.txt
-   tests.txt
-   ThinkPHP.txt
-   tomcat.txt
-   top7000.txt
-   ueditor.txt
-   vignette.txt
-   weblogic.txt
-   websphere.txt
-   wordpress.txt
-   Z-BLOG.txt
-   乔客.txt
-   其他CMS.txt
-   动力.txt
-   动易.txt
-   动网.txt
-   千博.txt
-   南方数据.txt
-   夏茂OA.txt
-   天天团购.txt
-   汇成cms.txt
-   科讯.txt
-   织梦.txt
-   西部商务.txt
-   迪科.txt
-   逐浪cms.txt
-   风讯.txt
-   风讯foosunCMS.txt
+api.txt
+ASP.TXT
+aspx.txt
+axis.txt
+cgis.txt
+coldfusion.txt
+ctf.txt
+DIR.txt
+domino.txt
+editor.txt
+espcms.txt
+fatwire.txt
+fatwire_pagenames.txt
+FCKeditor编辑器.txt
+frontpage.txt
+gn2023.txt
+hpsmh.txt
+hyperion.txt
+iis.txt
+iplanet.txt
+jboss.txt
+jersey.txt
+JoekoeCMS.txt
+jrun.txt
+jsp.txt
+MDB.txt
+netware.txt
+oracle.txt
+php.txt
+phpcms.txt
+phpweb.txt
+ror.txt
+S2命令执行.txt
+sap.txt
+sharepoint.txt
+shopex.txt
+spring.txt
+sunas.txt
+tests.txt
+ThinkPHP.txt
+tomcat.txt
+top7000.txt
+ueditor.txt
+vignette.txt
+weblogic.txt
+websphere.txt
+wordpress.txt
+Z-BLOG.txt
+乔客.txt
+其他CMS.txt
+动力.txt
+动易.txt
+动网.txt
+千博.txt
+南方数据.txt
+夏茂OA.txt
+天天团购.txt
+汇成cms.txt
+科讯.txt
+织梦.txt
+西部商务.txt
+迪科.txt
+逐浪cms.txt
+风讯.txt
+风讯foosunCMS.txt
    ```
