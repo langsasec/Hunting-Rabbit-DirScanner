@@ -2,6 +2,8 @@
 
 一款快速易上手的目录扫描工具。
 
+进入 [英文文档](https://github.com/langsasec/Hunting-Rabbit-DirScanner/blob/main/README_EN.md)
+
 ## 使用方法
 
 ```sh
