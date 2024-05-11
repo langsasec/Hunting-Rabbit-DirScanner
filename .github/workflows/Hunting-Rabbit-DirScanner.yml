@@ -32,4 +32,4 @@ jobs:
         pyinstaller -Fw Hunting-Rabbit-DirScanner.py
     - name: Test with Hunting-Rabbit-DirScanner
       run: |
-        ./Hunting-Rabbit-DirScanner -h  # 或者指定测试命令和参数
+        ./dist/Hunting-Rabbit-DirScanner -h  # 或者指定测试命令和参数
