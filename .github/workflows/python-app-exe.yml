@@ -25,18 +25,17 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        pip install pyinstaller==5.10
+        pip install pyinstaller
 
     - name: Build Executable for Windows
       if: runner.os == 'Windows'
       run: |
-        pyinstaller --add-data='dict;dict' --add-data='log;log' --add-data='header.config;.' --add-data='LICENSE;.' Hunting-Rabbit-DirScanner.py
+        pyinstaller -F Hunting-Rabbit-DirScanner.py
 
     - name: Build Executable for macOS and Linux
       if: runner.os == 'macOS' || runner.os == 'Linux'
       run: |
-        pyinstaller --add-data='dict;dict' --add-data='log;log' --add-data='header.config;.' --add-data='LICENSE;.' Hunting-Rabbit-DirScanner.py
-
+        pyinstaller -F Hunting-Rabbit-DirScanner.py
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
