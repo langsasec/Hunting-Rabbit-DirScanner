@@ -30,12 +30,12 @@ jobs:
     - name: Build Executable for Windows
       if: runner.os == 'Windows'
       run: |
-        pyinstaller --add-data="dict;dict" --add-data="log;log" --add-data="header.config;." --add-data="LICENSE;." Hunting-Rabbit-DirScanner.py
+        pyinstaller --add-data='dict;dict' --add-data='log;log' --add-data='header.config;.' --add-data='LICENSE;.' Hunting-Rabbit-DirScanner.py
 
     - name: Build Executable for macOS and Linux
       if: runner.os == 'macOS' || runner.os == 'Linux'
       run: |
-        pyinstaller --add-data="dict;dict" --add-data="log;log" --add-data="header.config;." --add-data="LICENSE;." Hunting-Rabbit-DirScanner.py
+        pyinstaller --add-data='dict;dict' --add-data='log;log' --add-data='header.config;.' --add-data='LICENSE;.' Hunting-Rabbit-DirScanner.py
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
