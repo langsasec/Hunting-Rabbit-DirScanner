@@ -8,8 +8,8 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, macos-latest, ubuntu-latest]
-        python-version: [3.10]
-        architecture: [x64]
+        python-version: [3.6]
+        architecture: [x86,x64]
 
     steps:
     - name: Check out repository
