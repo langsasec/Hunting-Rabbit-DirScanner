@@ -20,18 +20,16 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python 3.10
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v5
       with:
-        python-version: "3.10"
+        python-version: '3.10'
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pyinstaller
-        pip install -r requirements.txt
-    - name: dabao
+        pip install pyinstaller -r requirements.txt
+    - name: Build with PyInstaller
       run: |
-        # stop the build if there are Python syntax errors or undefined names
         pyinstaller -Fw Hunting-Rabbit-DirScanner.py
     - name: Test with Hunting-Rabbit-DirScanner
       run: |
-        Hunting-Rabbit-DirScanner
+        ./Hunting-Rabbit-DirScanner -h  # 或者指定测试命令和参数
