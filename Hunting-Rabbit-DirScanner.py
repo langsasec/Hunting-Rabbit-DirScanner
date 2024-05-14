@@ -26,18 +26,25 @@ def read_dir(url, dict_name):
         file_paths = glob.glob("dict/*.txt")
         # 逐个打开并读取文件内容
         for file_path in file_paths:
-            with open(file_path, 'r', encoding='utf-8') as f:
+            with open(file_path, 'r', encoding='UTF-8') as f:
                 lines = f.readlines()
-                print(lines)
-                if url is not None:
+                if url:
                     words.extend([url + "/" + x.strip() for x in lines])
     else:
         dict_name = dict_name.split(',')
         for name in dict_name:
-            with open(f"dict/{name}.txt", 'r', encoding="utf-8") as f:
-                lines = f.readlines()
-                if url:
-                    words.extend([url + "/" + x.strip() for x in lines])
+            # 如果字典存在
+            if name in str(glob.glob("dict/*.txt")):
+                with open(f"dict/{name}.txt", 'r', encoding="utf-8") as f:
+                    lines = f.readlines()
+                    if url:
+                        words.extend([url + "/" + x.strip() for x in lines])
+            else:
+                print(f"\033[31m[Hunting-Rabbit-DirScanner]: {name}.txt is Not Found\n\033[0m")
+                print("Please select from the following dictionaries:\n")
+                for i in glob.glob("dict/*.txt"):
+                    print(i.replace("dict\\", "").replace(".txt",""), end=",")
+                sys.exit()
     return set(words)
 
 
@@ -133,7 +140,7 @@ def execute_threads(thread_num, worker):
         stop_event.set()
     finally:
         for t in threads:
-            t.join()  # 等待所有线程结束
+            t.join(timeout=2)  # 等待所有线程结束
 
 
 def dir_scan(url, use_random_ua, timeout, status_code_filter="200"):
