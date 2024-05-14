@@ -7,6 +7,7 @@
 
 import argparse
 import random
+import sys
 import threading
 import time
 
@@ -27,6 +28,7 @@ def read_dir(url, dict_name):
         for file_path in file_paths:
             with open(file_path, 'r', encoding='utf-8') as f:
                 lines = f.readlines()
+                print(lines)
                 if url is not None:
                     words.extend([url + "/" + x.strip() for x in lines])
     else:
@@ -34,7 +36,7 @@ def read_dir(url, dict_name):
         for name in dict_name:
             with open(f"dict/{name}.txt", 'r', encoding="utf-8") as f:
                 lines = f.readlines()
-                if url is not None:
+                if url:
                     words.extend([url + "/" + x.strip() for x in lines])
     return set(words)
 
@@ -120,17 +122,18 @@ def Random_UserAgents():
 
 def execute_threads(thread_num, worker):
     threads = []
-    for i in range(thread_num):
-        t = threading.Thread(target=worker, args=(i,))
-        t.daemon = True  # 设置线程为守护线程,当主线程退出时，所有守护线程会立即停止
-        threads.append(t)
-        t.start()
+    stop_event = threading.Event()
     try:
-        while True:
-            time.sleep(1)
+        for i in range(thread_num):
+            t = threading.Thread(target=worker, args=(i, stop_event,))
+            threads.append(t)
+            t.start()
     except KeyboardInterrupt:
         print('Ctrl+C pressed. Terminating all child threads, Please wait...')
-        pass
+        stop_event.set()
+    finally:
+        for t in threads:
+            t.join()  # 等待所有线程结束
 
 
 def dir_scan(url, use_random_ua, timeout, status_code_filter="200"):
@@ -144,6 +147,8 @@ def dir_scan(url, use_random_ua, timeout, status_code_filter="200"):
             if line:
                 key, value = line.split(': ', 1)
                 headers[key] = value
+            else:
+                pass
     if use_random_ua:
         headers["User-Agent"] = Random_UserAgents()
     else:
@@ -173,6 +178,7 @@ def scan_log(name, result):
     name = name.replace("://", "-")
     name = name.replace("/", "-")
     log_file = f"log/{name}.html"
+    result_file = f"log/{name}.txt"
     template_str = """
 <!DOCTYPE html>
 <html>
@@ -357,6 +363,10 @@ tr:not(:first-child) td {
     template = Template(template_str)
     output = template.render(result=result)
 
+    with open(result_file, 'w', encoding='utf-8') as f:
+        for i in result:
+            f.write(i[0]+'\n')
+
     with open(log_file, 'w', encoding='utf-8') as f:
         f.write(output)
 
@@ -386,18 +396,18 @@ if __name__ == '__main__':
     result = []
 
 
-    def worker(i):
-        while words:
+    def worker(i, stop_event):
+        while words and not stop_event.is_set():
             word = words.pop()
             info = dir_scan(word, use_random_ua, timeout, status_code_filter)
-            if info is None:
-                pass
-            else:
+            if info:
                 result.append(info)
+            else:
+                pass
 
 
     execute_threads(thread_num, worker)
-    if result == []:
+    if not result:
         print("[-] No result!")
     else:
         scan_log(url, result)
