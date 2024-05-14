@@ -1,3 +1,0 @@
-/database/SiteWeaver.mdb
-/database/PowerEasy2006.mdb
-/database/SiteWeaver6.5.mdb
